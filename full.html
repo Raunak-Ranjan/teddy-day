@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Teddy Day! 🧸</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS Variables & Reset --- */
+        :root {
+            --col-pink: #FFC4D6;
+            --col-lavender: #E6E6FA;
+            --col-cream: #FFFDD0;
+            --col-rose-gold: #B76E79;
+            --col-text: #5D4037;
+            --col-white: #ffffff;
+            --shadow-soft: 0 10px 25px rgba(183, 110, 121, 0.15);
+            --shadow-card: 0 8px 16px rgba(0,0,0,0.05);
+            --font-head: 'Pacifico', cursive;
+            --font-body: 'Quicksand', sans-serif;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent; /* Remove blue tap box on mobile */
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--col-text);
+            background: linear-gradient(135deg, #fff0f5 0%, #e6e6fa 100%);
+            background-attachment: fixed;
+            background-image: radial-gradient(var(--col-pink) 15%, transparent 16%),
+                              radial-gradient(var(--col-lavender) 15%, transparent 16%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-head);
+            color: var(--col-rose-gold);
+            line-height: 1.3;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: var(--font-body);
+            border: none;
+            outline: none;
+        }
+
+        section {
+            padding: 3rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- 1. Hero Section --- */
+        .hero {
+            min-height: 90vh; /* Fallback */
+            min-height: 90dvh; /* Dynamic viewport height for mobile */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding: 1rem;
+        }
+
+        .hero-bear-container {
+            width: 280px;
+            height: 280px;
+            margin-bottom: 1.5rem;
+            animation: float 3s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 0px #fff;
+            z-index: 2;
+        }
+
+        .typewriter-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--col-rose-gold);
+            min-height: 3.2em; /* Ensure space for 2 lines on mobile */
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            max-width: 90%;
+        }
+
+        /* Background floating elements */
+        .bg-particle {
+            position: absolute;
+            bottom: -50px;
+            opacity: 0.6;
+            animation: riseUp linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* --- 2. Interactive Hug Section --- */
+        .hug-section {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 30px;
+            margin: 1rem auto;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+            width: 90%; /* Fit width on mobile */
+        }
+
+        .hug-container {
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.1s;
+            margin-top: 1rem;
+        }
+
+        /* The SVG Bear */
+        .svg-bear {
+            width: 200px;
+            height: auto;
+            max-width: 100%; /* Responsive scaling */
+            transition: filter 0.3s;
+        }
+        
+        .hug-container:hover .svg-bear {
+            filter: drop-shadow(0 0 10px var(--col-pink));
+        }
+
+        .hug-container.squished {
+            transform: scale(0.9, 0.85);
+        }
+
+        .hug-msg {
+            margin-top: 1rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--col-rose-gold);
+            height: 2rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .hug-msg.visible {
+            opacity: 1;
+        }
+
+        .instruction {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 0.5rem;
+        }
+
+        /* --- 3. Love Note Generator --- */
+        .note-section {
+            text-align: center;
+        }
+
+        .love-card {
+            background: var(--col-white);
+            max-width: 500px;
+            width: 95%; /* Responsive width */
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: var(--shadow-card);
+            border: 2px solid var(--col-pink);
+        }
+
+        /* Ribbon Effect */
+        .love-card::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 60px;
+            background: var(--col-rose-gold);
+            clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
+        }
+
+        .quote-display {
+            font-size: 1.2rem;
+            font-style: italic;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease;
+        }
+
+        .quote-display.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--col-pink), var(--col-rose-gold));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(183, 110, 121, 0.4);
+            transition: var(--transition);
+            width: 100%; /* Full width button on very small screens */
+            max-width: 250px;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.95);
+        }
+
+        /* --- 4. Teddy Gallery --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem 0;
+        }
+
+        .teddy-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition);
+            border-bottom: 5px solid var(--col-lavender);
+        }
+
+        .teddy-emoji {
+            font-size: 4rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .teddy-name {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-family: var(--font-head);
+        }
+
+        .trait-tag {
+            background: var(--col-lavender);
+            color: var(--col-text);
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .fun-fact {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* --- 5. Send a Teddy (Form) --- */
+        .send-section {
+            background: var(--col-cream);
+            border-radius: 30px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+            width: 95%;
+            margin: 0 auto;
+        }
+
+        .teddy-form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .style-selector {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .radio-label {
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .radio-label input {
+            display: none;
+        }
+
+        .style-box {
+            border: 2px solid transparent;
+            padding: 10px;
+            border-radius: 15px;
+            background: white;
+            transition: var(--transition);
+            width: 80px; /* Smaller for mobile */
+        }
+
+        .radio-label input:checked + .style-box {
+            border-color: var(--col-rose-gold);
+            background: var(--col-pink);
+            transform: scale(1.05);
+        }
+
+        .style-emoji {
+            font-size: 2.2rem;
+            display: block;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 15px;
+            border: 2px solid #ddd;
+            font-family: var(--font-body);
+            font-size: 16px; /* Prevents zoom on iOS */
+            resize: vertical;
+            min-height: 100px;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: var(--col-rose-gold);
+        }
+
+        /* Overlay Modal */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            backdrop-filter: blur(5px);
+            padding: 1rem;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .generated-card {
+            background: white;
+            padding: 2rem 1.5rem;
+            border-radius: 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 8px solid var(--col-pink);
+            position: relative;
+        }
+
+        .overlay.active .generated-card {
+            transform: scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 15px;
+            font-size: 2.5rem;
+            cursor: pointer;
+            color: #aaa;
+            padding: 5px; /* Bigger touch target */
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 3rem 1rem 6rem 1rem; /* Extra padding at bottom for music button */
+            background: var(--col-pink);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-sparkle {
+            position: absolute;
+            background: white;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: sparkleFloat 4s linear infinite;
+        }
+
+        /* --- Animations --- */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes wobble {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        @keyframes riseUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes sparkleFloat {
+            0% { transform: translateX(-10vw); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(110vw); opacity: 0; }
+        }
+
+        /* Confetti Styling */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        /* --- Music Button Styling --- */
+        .music-btn {
+            position: fixed;
+            bottom: 25px;
+            left: 20px;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: var(--col-white);
+            border: 2px solid var(--col-rose-gold);
+            color: var(--col-rose-gold);
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-soft);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .music-btn:hover {
+            transform: scale(1.1);
+            background: var(--col-pink);
+            color: white;
+        }
+
+        .music-btn.playing {
+            background: var(--col-rose-gold);
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(183, 110, 121, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(183, 110, 121, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(183, 110, 121, 0); }
+        }
+
+        /* --- MOBILE SPECIFIC OVERRIDES --- */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.2rem;
+                padding: 0 10px;
+            }
+            .hero-bear-container {
+                width: 200px;
+                height: 200px;
+            }
+            .typewriter-text {
+                font-size: 1.2rem;
+            }
+            
+            section {
+                padding: 2.5rem 1rem;
+            }
+
+            .hug-section {
+                padding: 2rem 1rem;
+            }
+
+            .svg-bear {
+                width: 160px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr; /* Single column on mobile */
+                gap: 1.5rem;
+            }
+            
+            .style-box {
+                width: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="teddy-music.mp3" type="audio/mpeg">
+    </audio>
+    <button class="music-btn" id="musicToggle" title="Play Music">🎵</button>
+
+    <header class="hero" id="hero">
+        <div class="hero-bear-container">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="25" fill="#8d6e63" />
+                <circle cx="50" cy="50" r="15" fill="#d7ccc8" />
+                <circle cx="150" cy="50" r="25" fill="#8d6e63" />
+                <circle cx="150" cy="50" r="15" fill="#d7ccc8" />
+                <circle cx="100" cy="100" r="60" fill="#a1887f" />
+                <ellipse cx="100" cy="115" rx="25" ry="20" fill="#d7ccc8" />
+                <ellipse cx="100" cy="108" rx="10" ry="7" fill="#4e342e" />
+                <circle cx="80" cy="90" r="6" fill="#3e2723" />
+                <circle cx="120" cy="90" r="6" fill="#3e2723" />
+                <circle cx="82" cy="88" r="2" fill="white" />
+                <circle cx="122" cy="88" r="2" fill="white" />
+                <path d="M 90 125 Q 100 135 110 125" stroke="#4e342e" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <circle cx="70" cy="110" r="8" fill="#ffcdd2" opacity="0.6" />
+                <circle cx="130" cy="110" r="8" fill="#ffcdd2" opacity="0.6" />
+            </svg>
+        </div>
+        <h1 class="hero-title">Happy Teddy Day Babu!</h1>
+        <div class="typewriter-text" id="typewriter"></div>
+        <div id="particle-container"></div>
+    </header>
+
+    <section class="hug-section">
+        <h2>Give Teddy a Hug!</h2>
+        <p class="instruction">(Tap the bear to squeeze)</p>
+        <div class="hug-container" id="hugBear" role="button" aria-label="Click to hug the bear">
+            <svg class="svg-bear" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+                 <ellipse cx="40" cy="160" rx="25" ry="40" fill="#8d6e63" transform="rotate(-30 40 160)"/>
+                 <ellipse cx="160" cy="160" rx="25" ry="40" fill="#8d6e63" transform="rotate(30 160 160)"/>
+                 <ellipse cx="100" cy="180" rx="70" ry="60" fill="#a1887f" />
+                 <circle cx="100" cy="180" r="40" fill="#d7ccc8" opacity="0.5"/>
+                 <circle cx="40" cy="50" r="25" fill="#8d6e63" />
+                 <circle cx="160" cy="50" r="25" fill="#8d6e63" />
+                 <circle cx="100" cy="100" r="65" fill="#a1887f" />
+                 <ellipse cx="100" cy="115" rx="28" ry="22" fill="#d7ccc8" />
+                 <ellipse cx="100" cy="108" rx="10" ry="7" fill="#4e342e" />
+                 <circle cx="75" cy="90" r="7" fill="#3e2723" />
+                 <circle cx="125" cy="90" r="7" fill="#3e2723" />
+                 <ellipse cx="60" cy="230" rx="20" ry="15" fill="#8d6e63" />
+                 <ellipse cx="140" cy="230" rx="20" ry="15" fill="#8d6e63" />
+            </svg>
+        </div>
+        <div class="hug-msg" id="hugMsg"></div>
+    </section>
+
+    <section class="note-section">
+        <div class="love-card">
+            <h2>Teddy's Love Note</h2>
+            <div class="quote-display" id="quoteDisplay">
+                Tap the button to reveal a message...
+            </div>
+            <button class="btn-primary" id="generateNoteBtn">Open Note 💌</button>
+        </div>
+    </section>
+
+    <section class="gallery-section">
+        <h2 style="text-align: center;">Meet the Teddies</h2>
+        <div class="gallery-grid">
+            <div class="teddy-card">
+                <span class="teddy-emoji">🧸</span>
+                <h3 class="teddy-name">Sir Cuddles</h3>
+                <span class="trait-tag">Professional Snuggler</span>
+                <p class="fun-fact">Fact: Has attended 500+ tea parties.</p>
+            </div>
+            <div class="teddy-card">
+                <span class="teddy-emoji">🐼</span>
+                <h3 class="teddy-name">Panda Paws</h3>
+                <span class="trait-tag">Bamboo Enthusiast</span>
+                <p class="fun-fact">Fact: Can sleep for 14 hours straight.</p>
+            </div>
+            <div class="teddy-card">
+                <span class="teddy-emoji">🐨</span>
+                <h3 class="teddy-name">Koala Karl</h3>
+                <span class="trait-tag">Tree Hugger</span>
+                <p class="fun-fact">Fact: Gives the firmest hugs in the forest.</p>
+            </div>
+            <div class="teddy-card">
+                <span class="teddy-emoji">🐻‍❄️</span>
+                <h3 class="teddy-name">Snowy</h3>
+                <span class="trait-tag">Chill Vibes</span>
+                <p class="fun-fact">Fact: Loves ice cream even in winter.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="send-section">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Send a Virtual Teddy</h2>
+        <form class="teddy-form" id="teddyForm">
+            <label style="text-align:center;">Choose your Teddy:</label>
+            <div class="style-selector">
+                <label class="radio-label">
+                    <input type="radio" name="teddyStyle" value="🧸" checked>
+                    <div class="style-box"><span class="style-emoji">🧸</span></div>
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="teddyStyle" value="🐼">
+                    <div class="style-box"><span class="style-emoji">🐼</span></div>
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="teddyStyle" value="🐻">
+                    <div class="style-box"><span class="style-emoji">🐻</span></div>
+                </label>
+            </div>
+            
+            <label for="message">Your Message:</label>
+            <textarea id="message" placeholder="Write something sweet here..." maxlength="100" required></textarea>
+            
+            <button type="submit" class="btn-primary" style="margin: 0 auto; display: block;">Send Teddy 🚀</button>
+        </form>
+    </section>
+
+    <div class="overlay" id="modalOverlay">
+        <div class="generated-card">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <h3 style="margin-bottom: 1rem;">Teddy Sent!</h3>
+            <div style="font-size: 5rem; margin: 1rem 0;" id="modalTeddy"></div>
+            <p id="modalMessage" style="font-size: 1.2rem; font-style: italic; color: #555;"></p>
+        </div>
+    </div>
+
+    <footer>
+        <p>Every teddy holds a little piece of love 🧸</p>
+        <div id="footer-sparkles"></div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 0. AUDIO SYSTEM ---
+            
+            // Context for SFX
+            let audioCtx;
+            function initAudio() {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }
+
+            // Procedural "Squeak" Sound
+            function playSqueak() {
+                initAudio();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.type = 'sine';
+                const now = audioCtx.currentTime;
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.1);
+                gain.gain.setValueAtTime(0.01, now);
+                gain.gain.linearRampToValueAtTime(0.3, now + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                osc.start(now);
+                osc.stop(now + 0.2);
+            }
+
+            // Procedural "Pop" Sound
+            function playPop() {
+                initAudio();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.type = 'triangle';
+                const now = audioCtx.currentTime;
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.exponentialRampToValueAtTime(50, now + 0.1);
+                gain.gain.setValueAtTime(0.5, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            }
+
+            // Procedural "Sparkle" Sound
+            function playSparkle() {
+                initAudio();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const now = audioCtx.currentTime;
+                const gain = audioCtx.createGain();
+                gain.connect(audioCtx.destination);
+                gain.gain.value = 0.05;
+                for(let i=0; i<5; i++) {
+                    const osc = audioCtx.createOscillator();
+                    osc.connect(gain);
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(1000 + (i*200), now + (i*0.05));
+                    osc.start(now + (i*0.05));
+                    osc.stop(now + (i*0.05) + 0.1);
+                }
+            }
+
+            // --- Background Music Logic ---
+            const musicBtn = document.getElementById('musicToggle');
+            const bgMusic = document.getElementById('bgMusic');
+            let isPlaying = false;
+            
+            // Set Initial Volume (45%)
+            bgMusic.volume = 0.45;
+
+            musicBtn.addEventListener('click', () => {
+                if (isPlaying) {
+                    bgMusic.pause();
+                    musicBtn.textContent = '🎵';
+                    musicBtn.classList.remove('playing');
+                } else {
+                    bgMusic.play();
+                    musicBtn.textContent = '⏸';
+                    musicBtn.classList.add('playing');
+                }
+                isPlaying = !isPlaying;
+            });
+
+            // --- 1. Hero Animation ---
+            const heroText = "Sending you the warmest, softest bear hugs!";
+            const typewriterEl = document.getElementById('typewriter');
+            let typeIndex = 0;
+
+            function typeWriter() {
+                if (typeIndex < heroText.length) {
+                    typewriterEl.textContent += heroText.charAt(typeIndex);
+                    typeIndex++;
+                    setTimeout(typeWriter, 50);
+                }
+            }
+            setTimeout(typeWriter, 500);
+
+            // Particles
+            const particleContainer = document.getElementById('particle-container');
+            const particleIcons = ['❤️', '⭐', '☁️', '🌸'];
+
+            for (let i = 0; i < 15; i++) {
+                const span = document.createElement('span');
+                span.classList.add('bg-particle');
+                span.textContent = particleIcons[Math.floor(Math.random() * particleIcons.length)];
+                span.style.left = Math.random() * 100 + '%';
+                span.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                span.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                span.style.animationDelay = Math.random() * 5 + 's';
+                particleContainer.appendChild(span);
+            }
+
+            // --- 2. Interactive Hug ---
+            const hugBear = document.getElementById('hugBear');
+            const hugMsg = document.getElementById('hugMsg');
+            const messages = ["You're hugged!", "So warm!", "Squeeze!", "Beary loved!", "Softest hugs!"];
+            
+            hugBear.addEventListener('click', (e) => {
+                // Play SFX
+                playSqueak();
+
+                // --- AUTO-PLAY MUSIC LOGIC ---
+                // If music is paused, play it on first interaction!
+                if (bgMusic.paused) {
+                    bgMusic.volume = 0.45; // Ensure volume is 45%
+                    bgMusic.play().then(() => {
+                        musicBtn.textContent = '⏸';
+                        musicBtn.classList.add('playing');
+                        isPlaying = true;
+                    }).catch(err => console.log("Audio play failed:", err));
+                }
+
+                // Animation reset logic
+                hugBear.classList.remove('squished');
+                void hugBear.offsetWidth; // trigger reflow
+                hugBear.classList.add('squished');
+
+                // Particle burst
+                createConfettiBurst(e.clientX, e.clientY);
+
+                // Message Cycle
+                const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+                hugMsg.textContent = randomMsg;
+                hugMsg.classList.add('visible');
+                
+                // Hide message after a while
+                setTimeout(() => {
+                    hugMsg.classList.remove('visible');
+                    hugBear.classList.remove('squished');
+                }, 2000);
+            });
+
+            // --- 3. Love Note Generator ---
+            const quotes = [
+                "If I were a teddy bear, I'd never let you go.",
+                "You're softer than the fluffiest teddy.",
+                "Sending you a bear hug to last all day.",
+                "Life is un-bear-able without you!",
+                "You are my favorite teddy bear come to life.",
+                "Just like a teddy, I'm always here for you."
+            ];
+            const quoteDisplay = document.getElementById('quoteDisplay');
+            const generateBtn = document.getElementById('generateNoteBtn');
+
+            generateBtn.addEventListener('click', () => {
+                playSparkle();
+                quoteDisplay.classList.remove('show');
+                setTimeout(() => {
+                    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+                    quoteDisplay.textContent = `"${randomQuote}"`;
+                    quoteDisplay.classList.add('show');
+                }, 300);
+            });
+
+            // --- 5. Send Teddy Logic ---
+            const form = document.getElementById('teddyForm');
+            const modal = document.getElementById('modalOverlay');
+            const closeModal = document.getElementById('closeModal');
+            const modalTeddy = document.getElementById('modalTeddy');
+            const modalMessage = document.getElementById('modalMessage');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                playPop();
+                const selectedTeddy = document.querySelector('input[name="teddyStyle"]:checked').value;
+                const messageText = document.getElementById('message').value;
+                modalTeddy.textContent = selectedTeddy;
+                modalMessage.textContent = messageText;
+                modal.classList.add('active');
+                fireFullScreenConfetti();
+            });
+
+            closeModal.addEventListener('click', () => {
+                modal.classList.remove('active');
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+
+            // --- Footer Sparkles ---
+            const footerSparkles = document.getElementById('footer-sparkles');
+            for(let i=0; i<10; i++) {
+                const s = document.createElement('div');
+                s.className = 'footer-sparkle';
+                s.style.top = Math.random() * 100 + '%';
+                s.style.animationDelay = Math.random() * 2 + 's';
+                s.style.opacity = Math.random();
+                footerSparkles.appendChild(s);
+            }
+
+            // --- Utility: Particle System ---
+            function createConfettiBurst(x, y) {
+                const colors = ['#FFC4D6', '#E6E6FA', '#FFD700', '#FF69B4'];
+                for (let i = 0; i < 20; i++) {
+                    const el = document.createElement('div');
+                    el.classList.add('confetti');
+                    document.body.appendChild(el);
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    el.style.backgroundColor = color;
+                    el.style.left = x + 'px';
+                    el.style.top = y + 'px';
+                    const angle = Math.random() * Math.PI * 2;
+                    const velocity = Math.random() * 100 + 50;
+                    const tx = Math.cos(angle) * velocity;
+                    const ty = Math.sin(angle) * velocity;
+                    el.animate([
+                        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                        { transform: `translate(${tx}px, ${ty}px) scale(0)`, opacity: 0 }
+                    ], {
+                        duration: 800,
+                        easing: 'cubic-bezier(0, .9, .57, 1)',
+                    }).onfinish = () => el.remove();
+                }
+            }
+
+            function fireFullScreenConfetti() {
+                const colors = ['#FFC4D6', '#E6E6FA', '#FFD700', '#FF69B4'];
+                for (let i = 0; i < 100; i++) {
+                    const el = document.createElement('div');
+                    el.classList.add('confetti');
+                    document.body.appendChild(el);
+                    el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    el.style.left = '50%';
+                    el.style.top = '50%';
+                    const angle = Math.random() * Math.PI * 2;
+                    const velocity = Math.random() * window.innerWidth/2;
+                    el.animate([
+                        { transform: 'translate(0, 0)', opacity: 1 },
+                        { transform: `translate(${Math.cos(angle) * velocity}px, ${Math.sin(angle) * velocity}px)`, opacity: 0 }
+                    ], {
+                        duration: 1500,
+                        easing: 'ease-out'
+                    }).onfinish = () => el.remove();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
